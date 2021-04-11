@@ -34,8 +34,9 @@ class Login extends Component {
 
     render(){
         return (
-            <Form horizontal>
+            <Form className = 'form-horizontal'>
                 <FormGroup controlId="username">
+                    <Form.Label>Email</Form.Label>
                     <Col componentClass={ControlLabel} sm={2}>
                         Email
                     </Col>

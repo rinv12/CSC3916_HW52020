@@ -1,10 +1,10 @@
 import actionTypes from '../constants/actionTypes';
 import runtimeEnv from '@mars/heroku-js-runtime-env';
 
-function moviesFetched(movies) {
+function moviesFetched(movie) {
     return {
         type: actionTypes.FETCH_MOVIES,
-        movies: movies
+        movies: movie
     }
 }
 
@@ -28,10 +28,10 @@ export function setMovie(movie) {
     }
 }
 
-export function fetchMovies() {
+export function fetchMovies(movieTitle) {
     const env = runtimeEnv();
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/movies?reviews=true`, {
+        return fetch(`${env.REACT_APP_API_URL}/movies/${movieTitle}?reviews=true`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -46,16 +46,17 @@ export function fetchMovies() {
                 return response.json();
             })
             .then( (res) => {
-                dispatch(moviesFetched(res));
+                console.log("FETCH_MOVIES", res)
+                dispatch(moviesFetched(res.movie[0]));
             })
             .catch( (e) => console.log(e) );
     }
 }
 
-export function fetchMovie(movieId){
+export function fetchMovie(){
     const env = runtimeEnv();
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/movies/${movieId}?reviews=true`, {
+        return fetch(`${env.REACT_APP_API_URL}/movies/?reviews=true`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -70,8 +71,38 @@ export function fetchMovie(movieId){
                 return response.json();
             })
             .then( (res) => {
+                console.log("FETCH_MOVIES", res)
                 dispatch(movieFetched(res));
             })
             .catch( (e) => console.log(e) );
+    }
+}
+
+export function addReview(data) {
+    const env = runtimeEnv();
+    console.log("data", data);
+    return dispatch => {
+        return fetch(`${env.REACT_APP_API_URL}/movies/?reviews`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            mode: 'cors',
+            body: JSON.stringify(data)
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw Error(res.statusText);
+                }
+                console.log("AddReview", res);
+                return res.json()
+            })
+            .then((res) => {
+                window.location.reload();
+                console.log("RESPONSE", res);
+            })
+            .catch((e) => console.log(e));
     }
 }

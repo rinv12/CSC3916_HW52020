@@ -5,8 +5,8 @@ import { Col, Form, FormGroup, FormControl, ControlLabel, Button } from 'react-b
 
 class Register extends Component {
 
-    constructor(){
-        super();
+    constructor(prop){
+        super(prop);
 
         this.updateDetails = this.updateDetails.bind(this);
         this.register = this.register.bind(this);
@@ -35,7 +35,7 @@ class Register extends Component {
 
     render(){
         return (
-            <Form horizontal>
+            <Form className = 'form-horizontal'>
                 <FormGroup controlId="name">
                     <Col componentClass={ControlLabel} sm={2}>
                         Name
