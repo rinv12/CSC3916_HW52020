@@ -1,5 +1,5 @@
 import actionTypes from '../constants/actionTypes';
-import runtimeEnv from '@mars/heroku-js-runtime-env';
+import runtimeEnv from '@mars/heroku-js-runtime-env'
 
 function moviesFetched(movie) {
     return {
@@ -46,7 +46,7 @@ export function fetchMovies(movieTitle) {
                 return response.json();
             })
             .then( (res) => {
-                console.log("FETCH_MOVIES", res)
+                console.log("FETCH_MOVIES RES", res)
                 dispatch(moviesFetched(res.movie[0]));
             })
             .catch( (e) => console.log(e) );
@@ -71,7 +71,7 @@ export function fetchMovie(){
                 return response.json();
             })
             .then( (res) => {
-                console.log("FETCH_MOVIES", res)
+                console.log("FETCH_MOVIES RES", res)
                 dispatch(movieFetched(res));
             })
             .catch( (e) => console.log(e) );
@@ -82,7 +82,7 @@ export function addReview(data) {
     const env = runtimeEnv();
     console.log("data", data);
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/movies/?reviews`, {
+        return fetch(`${env.REACT_APP_API_URL}/reviews`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -99,9 +99,9 @@ export function addReview(data) {
                 console.log("AddReview", res);
                 return res.json()
             })
-            .then((res) => {
+            .then((response) => {
                 window.location.reload();
-                console.log("RESPONSE", res);
+                console.log("RES", response);
             })
             .catch((e) => console.log(e));
     }
